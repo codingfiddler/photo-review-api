@@ -15,7 +15,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from apps.photoreview.views import StormTrooperViewSet
+from django.conf.urls import url
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('stormtrooper/', StormTrooperViewSet.as_view({'get': 'list', 'post': 'create'})),
+    url(
+        r'^stormtrooper/(?P<pk>[0-9-]+)/$',
+        StormTrooperViewSet.as_view({
+            'delete': 'destroy',
+            'get': 'retrieve',
+            'put': 'update',
+            'patch': 'partial_update',
+        }),
+        name="stormtrooper-single"
+    ),
 ]

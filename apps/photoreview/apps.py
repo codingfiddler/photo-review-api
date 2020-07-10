@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class photoreviewConfig(AppConfig):
+class PhotoReviewConfig(AppConfig):
     name = 'apps.photoreview'
