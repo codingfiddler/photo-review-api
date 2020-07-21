@@ -17,9 +17,9 @@ services:
     depends_on:
       - postgres
 
-  nginx:
-    build: ./docker/nginx
-    ports:
-      - 80:80
-    depends_on:
-      - django
+  # nginx:
+  #   build: ./docker/nginx
+  #   ports:
+  #     - 80:80
+  #   depends_on:
+  #     - django
