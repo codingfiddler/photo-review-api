@@ -15,7 +15,32 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from apps.photoreview.views import AnimalViewSet, MinecraftWorldViewSet
+from django.conf.urls import url
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('minecraftworlds/', MinecraftWorldViewSet.as_view({'get': 'list', 'post': 'create'})),
+    url(
+        r'^minecraftworlds/(?P<pk>[0-9-]+)/$',
+        MinecraftWorldViewSet.as_view({
+            'delete': 'destroy',
+            'get': 'retrieve',
+            'put': 'update',
+            'patch': 'partial_update',
+        }),
+        name="minecraftworld-single"
+    ),
+    path('animals/', AnimalViewSet.as_view({'get': 'list', 'post': 'create'})),
+    url(
+        r'^animals/(?P<pk>[0-9-]+)/$',
+        AnimalViewSet.as_view({
+            'delete': 'destroy',
+            'get': 'retrieve',
+            'put': 'update',
+            'patch': 'partial_update',
+        }),
+        name="animal-single"
+    ),
 ]
