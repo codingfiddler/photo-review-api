@@ -1,10 +1,10 @@
 from django.urls import path
-from .views import SignUpView
+from .views import SignUpViewSet
 from django.urls import include
 from django.conf.urls import url
 
 urlpatterns = [
     url('^', include('django.contrib.auth.urls')),
 
-    url(r'^signup/$',SignUpView.as_view(), name='signup'),
+    url(r'^signup/$',SignUpViewSet.as_view({"post":"checkToken"}), name='signup'),
 ]
