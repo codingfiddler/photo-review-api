@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'apps.photoreview.apps.PhotoReviewConfig',
     'rest_framework.authtoken',
+    'boto3',
+    'django_s3_storage',
 ]
 
 REST_FRAMEWORK = {
@@ -138,3 +140,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+AWS_ACCESS_KEY_ID = 'AKIAQWCTCCDFBIEQGE56'
+AWS_SECRET_ACCESS_KEY = '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'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage' # django_s3_storage.storage.S3Storage
+AWS_STORAGE_BUCKET_NAME = 'krino-photos'
+AWS_S3_REGION_NAME = 'eu-west-2'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage' #django_s3_storage.storage.StaticS3Storage
