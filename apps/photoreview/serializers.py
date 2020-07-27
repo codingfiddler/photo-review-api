@@ -40,6 +40,7 @@ class Base64ImageField(serializers.ImageField):
 
         return extension
 
+
 class UploadedPhotoSerializer(serializers.ModelSerializer):
     photo = Base64ImageField(
         max_length=None, use_url=True,
