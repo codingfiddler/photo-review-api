@@ -64,6 +64,7 @@ class SignUpViewSet(viewsets.ViewSet):
         email = request.data["email"]
         location = request.data["location"]
         bio = request.data["bio"]
+        profile_image = request.data["profile_image"]
 
         username_queryset = CustomUser.objects.filter(username=username)
         email_queryset = CustomUser.objects.filter(email=email)
@@ -80,7 +81,8 @@ class SignUpViewSet(viewsets.ViewSet):
             email=email,
             password=password,
             location=location,
-            bio=bio
+            bio=bio,
+            profile_image=profile_image
         )
 
         data = CustomUserSerializer(instance = customUser).data
@@ -88,16 +90,6 @@ class SignUpViewSet(viewsets.ViewSet):
         return Response(data, status=201)
 
 class UploadedPhotoViewSet(APIView):
-    # def newImage(self, request):
-    #     photo = request.data["photos"]
-    #     title = request.data["title"]
-    #     photo_id = request.data["photo_id"]
-
-    #     newUpload = UploadedPhoto.objects.create(title=title, photo_id=photo_id, photo=photo)
-    #     data = UploadedPhotoSerializer(instance = newUpload).data    
-    
-    # queryset = UploadedPhoto.objects.all()
-    # serializer_class = UploadedPhotoSerializer
 
     parser_class = (FileUploadParser,)
 

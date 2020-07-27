@@ -1,11 +1,6 @@
 from rest_framework import serializers
 from .models import CustomUser, UploadedPhoto
 
-class CustomUserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CustomUser
-        fields = ["first_name", "last_name", "email", "username", "location", "bio"]
-
 class Base64ImageField(serializers.ImageField):
 
     def to_internal_value(self, data):
@@ -40,6 +35,13 @@ class Base64ImageField(serializers.ImageField):
 
         return extension
 
+class CustomUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        profile_image = Base64ImageField(
+            max_length=None, use_url=True,
+        )
+        fields = ["first_name", "last_name", "email", "username", "location", "bio", "profile_image"]
 
 class UploadedPhotoSerializer(serializers.ModelSerializer):
     photo = Base64ImageField(
