@@ -1,16 +1,17 @@
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
-from rest_framework import viewsets
-from apps.photoreview.models import CustomUser
+from rest_framework import viewsets, status
+from apps.photoreview.models import CustomUser, UploadedPhoto
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from django.contrib.auth import authenticate, login
 from rest_framework.authtoken.models import Token
 from rest_framework.authentication import TokenAuthentication
-from .forms import CustomUserCreationForm
+# from .forms import CustomUserCreationForm
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
-from .serializers import CustomUserSerializer
+from .serializers import CustomUserSerializer, UploadedPhotoSerializer
+from rest_framework.parsers import FileUploadParser
 
 class LoginViewSet(viewsets.ViewSet):
     def checkToken(self, request):
@@ -36,7 +37,6 @@ class CheckAuthenticated(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
     def isAuthenticated(self, request):
         return Response({"status": "authenticated"})
-
 
 class LogoutViewset(APIView):
     authentication_classes = [TokenAuthentication]
@@ -86,3 +86,42 @@ class SignUpViewSet(viewsets.ViewSet):
         data = CustomUserSerializer(instance = customUser).data
 
         return Response(data, status=201)
+
+class UploadedPhotoViewSet(APIView):
+    # def newImage(self, request):
+    #     photo = request.data["photos"]
+    #     title = request.data["title"]
+    #     photo_id = request.data["photo_id"]
+
+    #     newUpload = UploadedPhoto.objects.create(title=title, photo_id=photo_id, photo=photo)
+    #     data = UploadedPhotoSerializer(instance = newUpload).data    
+    
+    # queryset = UploadedPhoto.objects.all()
+    # serializer_class = UploadedPhotoSerializer
+
+
+
+
+    parser_class = (FileUploadParser,)
+
+    def post(self, request, *args, **kwargs):
+
+      file_serializer = UploadedPhotoSerializer(data=request.data)
+
+      if file_serializer.is_valid():
+          file_serializer.save()
+          return Response(file_serializer.data, status=status.HTTP_201_CREATED)
+      else:
+          return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    # def image_upload_view(request):
+    #     if request.method == 'POST':
+    #         form = ImageForm(request.POST, request.FILES)
+    #         if form.is_valid():
+    #             form.save()
+    #             # Get the current instance object to display in the template
+    #             img_obj = form.instance
+    #             return render(request, 'index.html', {'form': form, 'img_obj': img_obj})
+    #     else:
+    #         form = ImageForm()
+    #     return render(request, 'index.html', {'form': form})

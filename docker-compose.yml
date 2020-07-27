@@ -16,6 +16,7 @@ services:
       - "8080:8080"
     depends_on:
       - postgres
+      
 
   # nginx:
   #   build: ./docker/nginx
