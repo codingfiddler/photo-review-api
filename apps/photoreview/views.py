@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from django.contrib.auth import authenticate, login
 from rest_framework.authtoken.models import Token
 from rest_framework.authentication import TokenAuthentication
-# from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from .serializers import CustomUserSerializer, UploadedPhotoSerializer
@@ -55,7 +55,7 @@ class LogoutViewset(APIView):
             print(e)
             return Response({"status": "okay"})
 
-class SignUpViewSet(viewsets.ViewSet):
+class SignUpViewSet(viewsets.ViewSet, APIView):
     def userInfo(self, request):
         first_name = request.data['first_name']
         last_name = request.data['last_name']
@@ -73,6 +73,18 @@ class SignUpViewSet(viewsets.ViewSet):
             return Response({"status": "username taken"})
         if email_queryset.exists():
             return Response({"status":"email already in use"})
+        
+        parser_class = (FileUploadParser,)
+
+        def post(self, request, *args, **kwargs):
+
+            file_serializer = CustomUser(data=request.data['profile_image'])
+
+            if file_serializer.is_valid():
+                file_serializer.save()
+                return Response(file_serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         customUser = CustomUser.objects.create(
             first_name = first_name,

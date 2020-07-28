@@ -36,11 +36,11 @@ class Base64ImageField(serializers.ImageField):
         return extension
 
 class CustomUserSerializer(serializers.ModelSerializer):
+    profile_image = Base64ImageField(
+        max_length=None, use_url=True,
+    )
     class Meta:
         model = CustomUser
-        profile_image = Base64ImageField(
-            max_length=None, use_url=True,
-        )
         fields = ["first_name", "last_name", "email", "username", "location", "bio", "profile_image"]
 
 class UploadedPhotoSerializer(serializers.ModelSerializer):
