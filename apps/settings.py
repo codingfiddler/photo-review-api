@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'apps.photoreview.apps.PhotoReviewConfig',
     'rest_framework.authtoken',
     'boto3',
+    'PIL',
     # 'django_s3_storage',
 ]
 
@@ -153,6 +154,6 @@ STATICFILES_STORAGE = 'django_s3_storage.storage.StaticS3Storage' #storages.back
 S3DIRECT_DESTINATIONS = {
     'primary_destination': {
         'key': 'uploads/',
-        'allowed': ['image/jpg', 'image/jpeg', 'image/png', 'video/mp4'],
+        'allowed': ['image/jpg', 'image/jpeg', 'image/png'],
     },
 }
