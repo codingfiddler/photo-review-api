@@ -15,3 +15,14 @@ services:
       - "8080:8080"
     depends_on:
       - postgres
+    environment:
+      - AWS_ACCESS_KEY_ID=myfakekey
+      - AWS_SECRET_ACCESS_KEY=myfakesecret
+
+
+  # nginx:
+  #   build: ./docker/nginx
+  #   ports:
+  #     - 80:80
+  #   depends_on:
+  #     - django

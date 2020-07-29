@@ -38,17 +38,32 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'apps.photoreview.apps.PhotoReviewConfig'
+    'apps.photoreview.apps.PhotoReviewConfig',
+    'rest_framework.authtoken',
+    'boto3',
+    'django_s3_storage',
+    'django_filters',
+    # 'storages',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 ROOT_URLCONF = 'apps.urls'
@@ -56,7 +71,7 @@ ROOT_URLCONF = 'apps.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -71,6 +86,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'apps.wsgi.application'
 
+AUTH_USER_MODEL = 'photoreview.CustomUser'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
@@ -86,6 +102,10 @@ DATABASES = {
     }
 }
 
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
+
+AUTH_USER_MODEL = "photoreview.CustomUser"
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -124,3 +144,20 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# AWS_ACCESS_KEY_ID = 'AKIAQWCTCCDFBIEQGE56'
+# AWS_SECRET_ACCESS_KEY = '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'
+
+DEFAULT_FILE_STORAGE = 'django_s3_storage.storage.S3Storage' # storages.backends.s3boto3.S3Boto3Storage
+# AWS_STORAGE_BUCKET_NAME = 'krino-photos'
+AWS_S3_REGION_NAME = 'us-east-2'
+AWS_S3_BUCKET_NAME =  'krino-images'
+STATICFILES_STORAGE = 'django_s3_storage.storage.StaticS3Storage' #storages.backends.s3boto3.S3Boto3Storage
+S3DIRECT_DESTINATIONS = {
+    'primary_destination': {
+        'key': 'uploads/',
+        'allowed': ['image/jpg', 'image/jpeg', 'image/png'],
+    },
+}
+AWS_S3_FILE_OVERWRITE = False
