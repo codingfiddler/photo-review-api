@@ -9,17 +9,9 @@ services:
 
   django:
     build: .
-    command: python manage.py runserver 0.0.0.0:8080
     volumes:
       - .:/app
     ports:
       - "8080:8080"
     depends_on:
       - postgres
-
-  # nginx:
-  #   build: ./docker/nginx
-  #   ports:
-  #     - 80:80
-  #   depends_on:
-  #     - django
