@@ -90,10 +90,10 @@ AUTH_USER_MODEL = 'photoreview.CustomUser'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-db_host = os.environ.get('DB_HOST', 'postgres')
-db_name = os.environ.get('DB_NAME', 'postgres')
-db_user = os.environ.get('DB_USER', 'postgres')
-db_password = os.environ.get('DB_PASSWORD', 'postgres')
+db_host = os.environ['DB_HOST']
+db_name = os.environ['DB_NAME']
+db_user = os.environ['DB_USER']
+db_password = os.environ['DB_PASSWORD']
 
 DATABASES = {
     'default': {
