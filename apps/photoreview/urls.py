@@ -1,15 +1,16 @@
 from django.urls import path
-from .views import LoginViewSet, CheckAuthenticated, SearchImagesViewSet, LogoutViewset, SignUpViewSet, UploadedPhotoViewSet
+from .views import LoginViewSet, EditCustomUserViewSet, CheckAuthenticated, SearchImagesViewSet, LogoutViewset, SignUpViewSet, UploadedPhotoViewSet
 from django.urls import include
 from django.conf.urls import url, include
 
 urlpatterns = [
     url('^', include('django.contrib.auth.urls')),
-    url(r'^login1/$',LoginViewSet.as_view({"post":"checkToken"}), name='login1'),
+    url(r'^login/$',LoginViewSet.as_view({"post":"checkToken"}), name='login'),
     url(r'^checker/$',CheckAuthenticated.as_view({"get":"isAuthenticated"}), name='checker'),
-    url(r'^logout1/$',LogoutViewset.as_view(), name='logout1'),
-    url(r'^signup1/$',SignUpViewSet.as_view({"post":"userInfo"}), name='signup1'),
+    url(r'^logout/$',LogoutViewset.as_view(), name='logout'),
+    url(r'^signup/$',SignUpViewSet.as_view({"post":"userInfo"}), name='signup'),
     url(r'^upload/$',UploadedPhotoViewSet.as_view({"post":"create", "get":"list"}), name='upload'),
-    url(r'^searchimages/$',SearchImagesViewSet.as_view(), name='searchimages'),
+    url(r'^search/$',SearchImagesViewSet.as_view(), name='search'),
+    url(r'^edit/(?P<pk>[a-fA-F0-9-]+)/$',EditCustomUserViewSet.as_view({'patch': 'partial_update',}), name='edit'),
 
 ]
