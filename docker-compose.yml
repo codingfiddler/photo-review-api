@@ -9,21 +9,16 @@ services:
 
   django:
     build: .
-    command: python manage.py runserver 0.0.0.0:8080
     volumes:
       - .:/app
     ports:
-      - "8080:8080"
+      - "8888:8888"
     depends_on:
       - postgres
     environment:
-      - AWS_ACCESS_KEY_ID=AKIASFEFGCHVIWFT5YLB
-      - AWS_SECRET_ACCESS_KEY=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
-      
-
-  # nginx:
-  #   build: ./docker/nginx
-  #   ports:
-  #     - 80:80
-  #   depends_on:
-  #     - django
+      - AWS_ACCESS_KEY_ID=myfakekey
+      - AWS_SECRET_ACCESS_KEY=myfakesecret
+      - DB_HOST=postgres
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=postgres

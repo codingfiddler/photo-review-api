@@ -33,12 +33,12 @@ class LoginViewSet(viewsets.ViewSet):
                     return Response({"status": "okay", "token":token.key})
             else:
                 return Response({"status": "go away"}, status=401)
-            
+
         except Exception as e:
             print(e)
             return Response({"status": "something is wrong"})
 
-class CheckAuthenticated(viewsets.ViewSet): 
+class CheckAuthenticated(viewsets.ViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     def isAuthenticated(self, request):
@@ -56,7 +56,7 @@ class LogoutViewset(APIView):
                 return Response({"status": "going away"})
             else:
                 return Response({"status": "oops youre stuck"}, status=401)
-            
+
         except Exception as e:
             print(e)
             return Response({"status": "okay"})
@@ -78,7 +78,7 @@ class SignUpViewSet(viewsets.ViewSet, APIView):
             return Response({"status": "username taken"})
         if email_queryset.exists():
             return Response({"status":"email already in use"})
-        
+
         parser_class = (FileUploadParser,)
 
         def post(self, request, *args, **kwargs):
@@ -151,3 +151,6 @@ class SearchImagesViewSet(generics.ListAPIView):
 
 # b990cb81-26a9-4002-8755-dcad132a3be3
 
+class UpView(APIView):
+    def get(self, request):
+        return Response("ok", status=200)
