@@ -12,6 +12,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from .serializers import CustomUserSerializer, UploadedPhotoSerializer
 from rest_framework.parsers import FileUploadParser
+# import boto3
+from django_filters.rest_framework import DjangoFilterBackend
 
 class LoginViewSet(viewsets.ViewSet):
     def checkToken(self, request):
@@ -101,16 +103,14 @@ class SignUpViewSet(viewsets.ViewSet, APIView):
 
         return Response(data, status=201)
 
-class UploadedPhotoViewSet(APIView):
+class UploadedPhotoViewSet(viewsets.ModelViewSet):
+    queryset=UploadedPhoto.objects.all()
+    serializer_class = UploadedPhotoSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['email']
 
-    parser_class = (FileUploadParser,)
 
-    def post(self, request, *args, **kwargs):
-
-      file_serializer = UploadedPhotoSerializer(data=request.data)
-
-      if file_serializer.is_valid():
-          file_serializer.save()
-          return Response(file_serializer.data, status=status.HTTP_201_CREATED)
-      else:
-          return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# class ProductList(generics.ListAPIView):
+#     queryset = Product.objects.all()
+#     serializer_class = ProductSerializer
+#     

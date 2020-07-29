@@ -45,23 +45,6 @@ class CustomUserSerializer(serializers.ModelSerializer):
         fields = ["first_name", "last_name", "email", "username", "location", "bio", "profile_image"]
 
 class UploadedPhotoSerializer(serializers.ModelSerializer):
-    # title = serializers.CharField(max_length = 100)
-    # photo = serializers.ImageField()
-    # username = serializers.CharField(max_length=150)
-    # email = serializers.EmailField(max_length = 200, null=True)
-    # location_taken = serializers.CharField(max_length = 500, help_text="Earth, Orion Arm")
-    # photo_id = serializers.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    
-    # created_at = serializers.DateTimeField(auto_now_add=True)
-    # taken_date = forms.DateTimeField(input_formats=['%d/%m/%Y %H:%M'])
-    # uploaded_date = forms.DateTimeField(input_formats=['%d/%m/%Y %H:%M'])
-
-    # software_used = serializers.TextField(max_length = 1000, blank=True, null=True)
-    # camera_used = serializers.CharField(max_length = 100, blank= True, null=True)
-    # camera_lens = serializers.CharField(max_length = 100, blank= True, null=True)
-    # aperture = serializers.CharField(max_length = 100, blank= True, null=True)
-    # shutter_speed = serializers.IntegerField(blank=True, null=True)
-    # iso = serializers.CharField(max_length=100, blank=True, null=True)
 
     photo = Base64ImageField(
         max_length=None, use_url=True,
@@ -92,4 +75,6 @@ class UploadedPhotoSerializer(serializers.ModelSerializer):
         instance.iso = validated_data.get('iso', instance.iso)
 
         instance.save()
+        print(instance)
         return instance
+
