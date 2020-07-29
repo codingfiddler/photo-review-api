@@ -1,0 +1,15 @@
+version: 0.0
+Resources:
+  - TargetService:
+      Type: AWS::ECS::Service
+      Properties:
+        TaskDefinition: "arn:aws:ecs:us-east-2:148455690730:task-definition/KrinoAPI:7"
+        LoadBalancerInfo:
+          ContainerName: "krinoapidjango"
+          ContainerPort: 8888
+        PlatformVersion: "LATEST"
+        NetworkConfiguration:
+          AwsvpcConfiguration:
+            Subnets: ["subnet-bf6104c5", "subnet-164d627e", "subnet-c64f828a"]
+            SecurityGroups: ["sg-0e565aa71589f2c40", "sg-6d34e801"]
+            AssignPublicIp: "ENABLED"
