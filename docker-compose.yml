@@ -18,11 +18,7 @@ services:
     environment:
       - AWS_ACCESS_KEY_ID=myfakekey
       - AWS_SECRET_ACCESS_KEY=myfakesecret
-
-
-  # nginx:
-  #   build: ./docker/nginx
-  #   ports:
-  #     - 80:80
-  #   depends_on:
-  #     - django
+      - DB_HOST=postgres
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=postgres
