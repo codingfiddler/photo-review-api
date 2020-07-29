@@ -16,6 +16,9 @@ services:
       - "8080:8080"
     depends_on:
       - postgres
+    environment:
+      - AWS_ACCESS_KEY_ID=AKIASFEFGCHVIWFT5YLB
+      - AWS_SECRET_ACCESS_KEY=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
       
 
   # nginx:

@@ -55,3 +55,6 @@ class UploadedPhoto(models.Model):
     #         'camera': exifgetter('Model'),
     #     },
     # )
+
+# class AllImages(models.Model):
+    
