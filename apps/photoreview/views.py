@@ -15,7 +15,7 @@ from rest_framework.response import Response
 from rest_framework.parsers import FileUploadParser
 from rest_framework.filters import SearchFilter, OrderingFilter
 
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, UpdateUserInformationForm
 from .serializers import CustomUserSerializer, UploadedPhotoSerializer
 import boto3
 
@@ -109,22 +109,19 @@ class UploadedPhotoViewSet(viewsets.ModelViewSet):
     queryset=UploadedPhoto.objects.all()
     serializer_class = UploadedPhotoSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['email']
-    
-    # def deleteImage(self, request):
-    #     filterset_fields = ['photo_id']
-    #     photo_id = request.data["photo_id"]
-    #     UploadedPhoto.objects.filter(photo_id=photo_id).delete()
-    #     print(photo_id)
-    #     instance = UploadedPhoto.objects.get(photo_id=photo_id)
-    #     instance.delete()
+    filterset_fields = ['email']   
 
 class SearchImagesViewSet(generics.ListAPIView):
     queryset = UploadedPhoto.objects.all()
     serializer_class = UploadedPhotoSerializer
     filter_backends = [filters.SearchFilter]
-    # filter_backends = (SearchFilter, OrderingFilter)
     search_fields = ['username', 'email', 'camera_used', 'location_taken', 'software_used']
+
+class EditCustomUserViewSet(viewsets.ModelViewSet):
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserSerializer
+
+
 
 # class DeleteImageViewSet(APIView):
 #     instance = SomeModel.objects.get(id=id)

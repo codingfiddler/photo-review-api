@@ -42,7 +42,18 @@ class CustomUserSerializer(serializers.ModelSerializer):
     )
     class Meta:
         model = CustomUser
-        fields = ["full_name", "email", "username", "location", "bio", "profile_image"]
+        fields = ["full_name", "email", "username", "location", "bio", "profile_image", "user_id"]
+        read_only_fields = ["user_id"]
+
+# class ProfileSerializer(serializers.ModelSerializer):
+#     customUser = CustomUserSerializer(partial=True)
+    
+#     class Meta:
+#         model = CustomUser
+#         fields = '__all__'
+#     def create(self, validated_data):
+#         customUser = CustomUser.objects.create(**validated_data)
+#         return customUser
 
 class UploadedPhotoSerializer(serializers.ModelSerializer):
 

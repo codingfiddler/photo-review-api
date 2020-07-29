@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 import uuid
+import datetime
 from django import forms
 
 # Create your models here.
@@ -11,6 +12,7 @@ class CustomUser(AbstractUser):
     location = models.CharField(max_length = 200, blank=True)
     bio = models.TextField(max_length = 500, blank=True, help_text='Write something cool!')
     profile_image = models.ImageField(default='apps/photoreview/default.jpeg', null=True)
+    user_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     
 
     def __str__(self):
@@ -27,9 +29,9 @@ class UploadedPhoto(models.Model):
     location_taken = models.CharField(max_length = 500, help_text="Earth, Orion Arm")
     photo_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     
-    created_at = models.DateTimeField(auto_now_add=True)
-    taken_date = forms.DateTimeField(input_formats=['%d/%m/%Y %H:%M'])
-    uploaded_date = forms.DateTimeField(input_formats=['%d/%m/%Y %H:%M'])
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    taken_date = forms.DateField(required=False)
+    uploaded_date = forms.DateField(initial=datetime.date.today)
 
     software_used = models.TextField(max_length = 1000, blank=True, null=True)
     camera_used = models.CharField(max_length = 100, blank= True, null=True)
