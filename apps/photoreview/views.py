@@ -1,19 +1,23 @@
+from apps.photoreview.models import CustomUser, UploadedPhoto
+
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
-from rest_framework import viewsets, status
-from apps.photoreview.models import CustomUser, UploadedPhoto
 from django.shortcuts import get_object_or_404
-from rest_framework.response import Response
 from django.contrib.auth import authenticate, login
+from django_filters.rest_framework import DjangoFilterBackend
+
+from rest_framework import viewsets, status, filters, generics
 from rest_framework.authtoken.models import Token
 from rest_framework.authentication import TokenAuthentication
-from .forms import CustomUserCreationForm
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
-from .serializers import CustomUserSerializer, UploadedPhotoSerializer
+from rest_framework.response import Response
 from rest_framework.parsers import FileUploadParser
-# import boto3
-from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
+
+from .forms import CustomUserCreationForm
+from .serializers import CustomUserSerializer, UploadedPhotoSerializer
+import boto3
 
 class LoginViewSet(viewsets.ViewSet):
     def checkToken(self, request):
@@ -32,7 +36,7 @@ class LoginViewSet(viewsets.ViewSet):
             
         except Exception as e:
             print(e)
-            return Response({"status": "okay"})
+            return Response({"status": "something is wrong"})
 
 class CheckAuthenticated(viewsets.ViewSet): 
     authentication_classes = [TokenAuthentication]
@@ -59,8 +63,7 @@ class LogoutViewset(APIView):
 
 class SignUpViewSet(viewsets.ViewSet, APIView):
     def userInfo(self, request):
-        first_name = request.data['first_name']
-        last_name = request.data['last_name']
+        full_name = request.data["full_name"]
         username = request.data["username"]
         password = request.data["password"]
         email = request.data["email"]
@@ -89,8 +92,7 @@ class SignUpViewSet(viewsets.ViewSet, APIView):
                 return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         customUser = CustomUser.objects.create(
-            first_name = first_name,
-            last_name = last_name,
+            full_name = full_name,
             username=username,
             email=email,
             password=password,
@@ -108,9 +110,44 @@ class UploadedPhotoViewSet(viewsets.ModelViewSet):
     serializer_class = UploadedPhotoSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['email']
+    
+    # def deleteImage(self, request):
+    #     filterset_fields = ['photo_id']
+    #     photo_id = request.data["photo_id"]
+    #     UploadedPhoto.objects.filter(photo_id=photo_id).delete()
+    #     print(photo_id)
+    #     instance = UploadedPhoto.objects.get(photo_id=photo_id)
+    #     instance.delete()
+
+class SearchImagesViewSet(generics.ListAPIView):
+    queryset = UploadedPhoto.objects.all()
+    serializer_class = UploadedPhotoSerializer
+    filter_backends = [filters.SearchFilter]
+    # filter_backends = (SearchFilter, OrderingFilter)
+    search_fields = ['username', 'email', 'camera_used', 'location_taken', 'software_used']
+
+# class DeleteImageViewSet(APIView):
+#     instance = SomeModel.objects.get(id=id)
+#     instance.delete()
+    
+    # queryset=UploadedPhoto.objects.all()
+    # serializer_class = UploadedPhotoSerializer
+    # filter_backends = [DjangoFilterBackend]
+    # filterset_fields = ['photo_id']
+
+    # s3 = boto3.resource("s3")
+    # obj = s3.Object("krino-photos", filterset_fields)
+    # obj.delete()
 
 
-# class ProductList(generics.ListAPIView):
-#     queryset = Product.objects.all()
-#     serializer_class = ProductSerializer
-#     
+    # def deleteImage(self, request):
+    #     photo_id = request.photo_id
+    #     queryset = UploadedPhoto.objects.filter(photo_id=photo_id)
+
+    # def deleteImage(self, request):
+    #     UploadedPhoto.objects.filter(photo_id = photo_id).delete()
+
+
+
+# b990cb81-26a9-4002-8755-dcad132a3be3
+

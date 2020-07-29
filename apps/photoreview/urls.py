@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import LoginViewSet, CheckAuthenticated, LogoutViewset, SignUpViewSet, UploadedPhotoViewSet
+from .views import LoginViewSet, CheckAuthenticated, SearchImagesViewSet, LogoutViewset, SignUpViewSet, UploadedPhotoViewSet
 from django.urls import include
 from django.conf.urls import url, include
 
@@ -10,7 +10,6 @@ urlpatterns = [
     url(r'^logout1/$',LogoutViewset.as_view(), name='logout1'),
     url(r'^signup1/$',SignUpViewSet.as_view({"post":"userInfo"}), name='signup1'),
     url(r'^upload/$',UploadedPhotoViewSet.as_view({"post":"create", "get":"list"}), name='upload'),
-
-    # url(r'^show/$',UploadedImagesViewSet.as_view()),
+    url(r'^searchimages/$',SearchImagesViewSet.as_view(), name='searchimages'),
 
 ]
