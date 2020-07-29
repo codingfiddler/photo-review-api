@@ -157,6 +157,7 @@ DEFAULT_FILE_STORAGE = 'django_s3_storage.storage.S3Storage' # storages.backends
 # AWS_STORAGE_BUCKET_NAME = 'krino-photos'
 AWS_S3_REGION_NAME = 'us-east-2'
 AWS_S3_BUCKET_NAME =  'krino-images'
+AWS_S3_BUCKET_NAME_STATIC =  'krino-images'
 STATICFILES_STORAGE = 'django_s3_storage.storage.StaticS3Storage' #storages.backends.s3boto3.S3Boto3Storage
 S3DIRECT_DESTINATIONS = {
     'primary_destination': {

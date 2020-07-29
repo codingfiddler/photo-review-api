@@ -42,7 +42,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
     )
     class Meta:
         model = CustomUser
-        fields = ["first_name", "last_name", "email", "username", "location", "bio", "profile_image"]
+        fields = ["full_name", "email", "username", "location", "bio", "profile_image"]
 
 class UploadedPhotoSerializer(serializers.ModelSerializer):
 
