@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import LoginViewSet, EditCustomUserViewSet, CommentViewSet, CheckAuthenticated, SearchImagesViewSet, LogoutViewset, SignUpViewSet, UploadedPhotoViewSet
+from .views import LoginViewSet, EditCustomUserViewSet, SearchPersonViewSet, CommentViewSet, CheckAuthenticated, SearchImagesViewSet, LogoutViewset, SignUpViewSet, UploadedPhotoViewSet
 from django.urls import include
 from django.conf.urls import url, include
 
@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^upload/$',UploadedPhotoViewSet.as_view({"post":"create", "get":"list"}), name='upload'),
     url(r'^comment/$',CommentViewSet.as_view({"post":"create", "get":"list"}), name='comment'),
     url(r'^search/$',SearchImagesViewSet.as_view(), name='search'),
+    url(r'^searchuser/$',SearchPersonViewSet.as_view(), name='searchuser'),
     url(r'^edit/(?P<pk>[a-fA-F0-9-]+)/$',EditCustomUserViewSet.as_view({'get': 'retrieve', 'patch': 'partial_update',}), name='edit'),
 
 ]

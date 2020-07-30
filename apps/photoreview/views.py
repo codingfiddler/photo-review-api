@@ -111,14 +111,6 @@ class SignUpViewSet(viewsets.ViewSet, APIView):
 class CommentViewSet(viewsets.ModelViewSet):
     queryset=Comment.objects.all()
     serializer_class = CommentSerializer
-    # def comment_info(self, request):
-    #     user_comment = request.data["user_comment"]
-    #     author = request.data["author"]
-    #     comment = Comment.objects.create(user_comment=user_comment, author=author)
-
-    #     data = CommentSerializer(instance = comment).data
-
-    #     return Response(data, status=201)
 
 class UploadedPhotoViewSet(viewsets.ModelViewSet):
     queryset=UploadedPhoto.objects.all()
@@ -142,6 +134,12 @@ class SearchImagesViewSet(generics.ListAPIView):
     serializer_class = UploadedPhotoSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['username', 'camera_used', 'location_taken', 'software_used']
+
+class SearchPersonViewSet(generics.ListAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['full_name', 'email']
 
 class EditCustomUserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
