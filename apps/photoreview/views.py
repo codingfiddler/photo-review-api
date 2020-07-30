@@ -133,7 +133,7 @@ class SearchImagesViewSet(generics.ListAPIView):
     queryset = UploadedPhoto.objects.all()
     serializer_class = UploadedPhotoSerializer
     filter_backends = [filters.SearchFilter]
-    search_fields = ['username', 'camera_used', 'location_taken', 'software_used']
+    search_fields = ['username', 'camera_used', 'location_taken', 'software_used', 'photo_id']
 
 class SearchPersonViewSet(generics.ListAPIView):
     queryset = CustomUser.objects.all()
