@@ -23,12 +23,19 @@ class LoginViewSet(viewsets.ViewSet):
     def checkToken(self, request):
         username = request.data["username"]
         password = request.data["password"]
+
+        # user = authenticate(request, username=username, password=password)
         try:
-            queryset = CustomUser.objects.filter(username=username)
+            queryset = CustomUser.objects.filter(username=username, password=password)
             resultsList = list(queryset)
+            # if user is not None:
+            #     print(user)
+            #     login(request, user)
             if len(resultsList) != 0:
                 user = resultsList[0]
                 if user:
+                    print(user)
+                    print('hello')
                     token = Token.objects.create(user=user)
                     return Response({"status": "okay", "token":token.key})
             else:
