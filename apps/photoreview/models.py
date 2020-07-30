@@ -4,6 +4,7 @@ import uuid
 import datetime
 from django.conf import settings
 from django import forms
+from taggit.managers import TaggableManager
 # from comments.models import Comment
 
 # Create your models here.
@@ -40,10 +41,12 @@ class UploadedPhoto(models.Model):
     shutter_speed = models.IntegerField(blank=True, null=True)
     iso = models.CharField(max_length=100, blank=True, null=True)
 
-    slug = models.SlugField(max_length=100, null=True)
+    tags = TaggableManager(blank=True, help_text="#add #some #hashtags")
+
+    # slug = models.SlugField(max_length=100, null=True)
 
 class Comment(models.Model):
-    post = models.ForeignKey(UploadedPhoto, related_name='comments', on_delete=models.CASCADE)
+    photo_id = models.ForeignKey(UploadedPhoto, related_name='comments', on_delete=models.CASCADE)
     user_comment = models.TextField(max_length=500, help_text="Praise / Constructive Feedback")
     date_posted = models.DateField(default=datetime.date.today)
     author = models.ForeignKey(CustomUser, related_name='author', on_delete=models.CASCADE)
