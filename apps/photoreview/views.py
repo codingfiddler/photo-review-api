@@ -1,4 +1,4 @@
-from apps.photoreview.models import CustomUser, UploadedPhoto
+from apps.photoreview.models import CustomUser, UploadedPhoto, Comment
 
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
@@ -15,30 +15,30 @@ from rest_framework.response import Response
 from rest_framework.parsers import FileUploadParser
 from rest_framework.filters import SearchFilter, OrderingFilter
 
-from .forms import CustomUserCreationForm, UpdateUserInformationForm
-from .serializers import CustomUserSerializer, UploadedPhotoSerializer
+# from .forms import CustomUserCreationForm, UpdateUserInformationForm
+from .serializers import CustomUserSerializer, UploadedPhotoSerializer, CommentSerializer
 import boto3
 
 class LoginViewSet(viewsets.ViewSet):
     def checkToken(self, request):
-        username = request.data["username"]
+        email = request.data["email"]
         password = request.data["password"]
 
         try:
-            queryset = CustomUser.objects.filter(username=username, password=password)
+            queryset = CustomUser.objects.filter(email=email, password=password)
             resultsList = list(queryset)
             if len(resultsList) != 0:
                 user = resultsList[0]
                 if user:
-                    print(user)
-                    print('hello')
+                    # print(user)
+                    # print('hello')
                     token = Token.objects.create(user=user)
                     return Response({"status": "okay", "token":token.key})
             else:
                 return Response({"status": "go away"}, status=401)
 
         except Exception as e:
-            print(e)
+            # print(e)
             return Response({"status": "something is wrong"})
 
 class CheckAuthenticated(viewsets.ViewSet):
@@ -61,7 +61,7 @@ class LogoutViewset(APIView):
                 return Response({"status": "oops youre stuck"}, status=401)
 
         except Exception as e:
-            print(e)
+            # print(e)
             return Response({"status": "okay"})
 
 class SignUpViewSet(viewsets.ViewSet, APIView):
@@ -108,23 +108,46 @@ class SignUpViewSet(viewsets.ViewSet, APIView):
 
         return Response(data, status=201)
 
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset=Comment.objects.all()
+    serializer_class = CommentSerializer
+    # def comment_info(self, request):
+    #     user_comment = request.data["user_comment"]
+    #     author = request.data["author"]
+    #     comment = Comment.objects.create(user_comment=user_comment, author=author)
+
+    #     data = CommentSerializer(instance = comment).data
+
+    #     return Response(data, status=201)
+
 class UploadedPhotoViewSet(viewsets.ModelViewSet):
     queryset=UploadedPhoto.objects.all()
     serializer_class = UploadedPhotoSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['email']   
+    # filter_backends = [DjangoFilterBackend]
+
+    # def userImages(self, request):
+    #     user_queryset = UploadedPhoto.objects.filter(username=request.user)
+    #     serializer_class = UploadedPhotoSerializer
+    #     return user_queryset
+
+#
+# class CustomUserPortfolio(viewsets.ModelViewSet):
+#     def portfolio(self,request):
+#         queryset = UploadedPhoto.objects.filter(username=request.user)
+#         serializer_class = CustomUserSerializer
+#         return queryset
 
 class SearchImagesViewSet(generics.ListAPIView):
     queryset = UploadedPhoto.objects.all()
     serializer_class = UploadedPhotoSerializer
     filter_backends = [filters.SearchFilter]
-    search_fields = ['username', 'email', 'camera_used', 'location_taken', 'software_used']
+    search_fields = ['username', 'camera_used', 'location_taken', 'software_used']
 
 class EditCustomUserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
 
-
 class UpView(APIView):
     def get(self, request):
         return Response("ok", status=200)
+
