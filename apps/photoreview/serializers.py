@@ -1,6 +1,7 @@
 from rest_framework import serializers
-from .models import CustomUser, UploadedPhoto
+from .models import CustomUser, UploadedPhoto, Comment
 from django import forms
+from rest_framework.response import Response
 
 class Base64ImageField(serializers.ImageField):
 
@@ -47,7 +48,6 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
 
 class UploadedPhotoSerializer(serializers.ModelSerializer):
-
     photo = Base64ImageField(
         max_length=None, use_url=True,
     )
@@ -59,8 +59,7 @@ class UploadedPhotoSerializer(serializers.ModelSerializer):
         return UploadedPhoto.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
-
-        instance.email = validated_data.get('email', instance.email)
+        # instance.email = validated_data.get('email', instance.email)
         instance.photo = validated_data.get('photo', instance.photo)
         instance.username = validated_data.get('username', instance.username)
         instance.title = validated_data.get('title', instance.title)
@@ -75,8 +74,21 @@ class UploadedPhotoSerializer(serializers.ModelSerializer):
         instance.aperture = validated_data.get('aperture', instance.aperture)
         instance.shutter_speed = validated_data.get('shutter_speed', instance.shutter_speed)
         instance.iso = validated_data.get('iso', instance.iso)
+        instance.slug = validated_data.get('slug', instance.slug)
 
         instance.save()
-        print(instance)
         return instance
 
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = "__all__"
+    
+    def create(self, validated_data):
+        print(validated_data)
+        return Comment.objects.create(**validated_data)
+    def update(self, instance, validated_data):
+        instance.post = validated_data.get('post', instance.post)
+        instance.author = validated_data.get('author', instance.author)
+        instance.date_posted = validated_data.get('date_posed', instance.date_posted)
+        instance.user_comment = validated_data.get('user_comment', instance.user_comment)
