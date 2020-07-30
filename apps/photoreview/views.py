@@ -23,12 +23,15 @@ class LoginViewSet(viewsets.ViewSet):
     def checkToken(self, request):
         username = request.data["username"]
         password = request.data["password"]
+
         try:
-            queryset = CustomUser.objects.filter(username=username)
+            queryset = CustomUser.objects.filter(username=username, password=password)
             resultsList = list(queryset)
             if len(resultsList) != 0:
                 user = resultsList[0]
                 if user:
+                    print(user)
+                    print('hello')
                     token = Token.objects.create(user=user)
                     return Response({"status": "okay", "token":token.key})
             else:
@@ -121,32 +124,6 @@ class EditCustomUserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
 
-
-
-# class DeleteImageViewSet(APIView):
-#     instance = SomeModel.objects.get(id=id)
-#     instance.delete()
-    
-    # queryset=UploadedPhoto.objects.all()
-    # serializer_class = UploadedPhotoSerializer
-    # filter_backends = [DjangoFilterBackend]
-    # filterset_fields = ['photo_id']
-
-    # s3 = boto3.resource("s3")
-    # obj = s3.Object("krino-photos", filterset_fields)
-    # obj.delete()
-
-
-    # def deleteImage(self, request):
-    #     photo_id = request.photo_id
-    #     queryset = UploadedPhoto.objects.filter(photo_id=photo_id)
-
-    # def deleteImage(self, request):
-    #     UploadedPhoto.objects.filter(photo_id = photo_id).delete()
-
-
-
-# b990cb81-26a9-4002-8755-dcad132a3be3
 
 class UpView(APIView):
     def get(self, request):

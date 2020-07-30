@@ -12,7 +12,6 @@ class CustomUser(AbstractUser):
     location = models.CharField(max_length = 200, blank=True)
     bio = models.TextField(max_length = 500, blank=True, help_text='Write something cool!')
     profile_image = models.ImageField(default='apps/photoreview/default.jpeg', null=True)
-    # id = str(models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False))
     
 
     def __str__(self):

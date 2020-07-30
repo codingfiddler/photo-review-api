@@ -4,7 +4,6 @@ from django.urls import include
 from django.conf.urls import url, include
 
 urlpatterns = [
-    # url('^', include('django.contrib.auth.urls')),
     url(r'^login/$',LoginViewSet.as_view({"post":"checkToken"}), name='login'),
     url(r'^checker/$',CheckAuthenticated.as_view({"get":"isAuthenticated"}), name='checker'),
     url(r'^logout/$',LogoutViewset.as_view(), name='logout'),
