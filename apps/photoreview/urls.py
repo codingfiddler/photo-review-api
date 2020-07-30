@@ -10,6 +10,6 @@ urlpatterns = [
     url(r'^signup/$',SignUpViewSet.as_view({"post":"userInfo"}), name='signup'),
     url(r'^upload/$',UploadedPhotoViewSet.as_view({"post":"create", "get":"list"}), name='upload'),
     url(r'^search/$',SearchImagesViewSet.as_view(), name='search'),
-    url(r'^edit/(?P<pk>[a-fA-F0-9-]+)/$',EditCustomUserViewSet.as_view({'patch': 'partial_update',}), name='edit'),
+    url(r'^edit/(?P<pk>[a-fA-F0-9-]+)/$',EditCustomUserViewSet.as_view({'get': 'retrieve', 'patch': 'partial_update',}), name='edit'),
 
 ]
