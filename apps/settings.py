@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'django_s3_storage',
     'django_filters',
     'corsheaders',
-    'taggit',
     # 'storages',
 ]
 

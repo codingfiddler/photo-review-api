@@ -115,25 +115,12 @@ class CommentViewSet(viewsets.ModelViewSet):
 class UploadedPhotoViewSet(viewsets.ModelViewSet):
     queryset=UploadedPhoto.objects.all()
     serializer_class = UploadedPhotoSerializer
-    # filter_backends = [DjangoFilterBackend]
-
-    # def userImages(self, request):
-    #     user_queryset = UploadedPhoto.objects.filter(username=request.user)
-    #     serializer_class = UploadedPhotoSerializer
-    #     return user_queryset
-
-#
-# class CustomUserPortfolio(viewsets.ModelViewSet):
-#     def portfolio(self,request):
-#         queryset = UploadedPhoto.objects.filter(username=request.user)
-#         serializer_class = CustomUserSerializer
-#         return queryset
 
 class SearchImagesViewSet(generics.ListAPIView):
-    queryset = UploadedPhoto.objects.all()
+    image_queryset = UploadedPhoto.objects.all()
     serializer_class = UploadedPhotoSerializer
     filter_backends = [filters.SearchFilter]
-    search_fields = ['username', 'camera_used', 'location_taken', 'software_used', 'photo_id']
+    search_fields = ['username', 'camera_used', 'location_taken', 'software_used', 'photo_id', 'tags']
 
 class SearchPersonViewSet(generics.ListAPIView):
     queryset = CustomUser.objects.all()

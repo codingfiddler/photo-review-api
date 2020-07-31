@@ -46,15 +46,36 @@ class CustomUserSerializer(serializers.ModelSerializer):
         fields = ["full_name", "email", "username", "location", "bio", "profile_image", "id"]
         read_only_fields = ["id"]
 
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = "__all__"
+    
+    def create(self, validated_data):
+        print(validated_data)
+        return Comment.objects.create(**validated_data)
+    def update(self, instance, validated_data):
+        instance.photo_id = validated_data.get('photo_id', instance.photo_id)
+        instance.author = validated_data.get('author', instance.author)
+        instance.date_posted = validated_data.get('date_posed', instance.date_posted)
+        instance.user_comment = validated_data.get('user_comment', instance.user_comment)
+
 class UploadedPhotoSerializer(serializers.ModelSerializer):
+    comments = serializers.SerializerMethodField()
+
     photo = Base64ImageField(
         max_length=None, use_url=True,
     )
     class Meta:
         model = UploadedPhoto
         fields = "__all__"
+    
+    def validate(self, data):
+        print(data)
+        return data
 
     def create(self, validated_data):
+        print(validated_data)
         return UploadedPhoto.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
@@ -77,18 +98,9 @@ class UploadedPhotoSerializer(serializers.ModelSerializer):
         instance.tags = validated_data.get('tags', instance.tags)
 
         instance.save()
+        # instance.save_m2m()
         return instance
-
-class CommentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Comment
-        fields = "__all__"
     
-    def create(self, validated_data):
-        print(validated_data)
-        return Comment.objects.create(**validated_data)
-    def update(self, instance, validated_data):
-        instance.photo_id = validated_data.get('photo_id', instance.photo_id)
-        instance.author = validated_data.get('author', instance.author)
-        instance.date_posted = validated_data.get('date_posed', instance.date_posted)
-        instance.user_comment = validated_data.get('user_comment', instance.user_comment)
+    def get_comments(self, obj):
+        comments = obj.comments.all()
+        return CommentSerializer(comments, many=True, read_only=True).data
