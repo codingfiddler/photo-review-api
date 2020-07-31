@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'boto3',
     'django_s3_storage',
     'django_filters',
-    'corsheaders'
+    'corsheaders',
+    'taggit',
     # 'storages',
 ]
 
