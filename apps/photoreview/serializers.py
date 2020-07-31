@@ -75,7 +75,7 @@ class UploadedPhotoSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
-        print(validated_data)
+        # print(validated_data)
         return UploadedPhoto.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
