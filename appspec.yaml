@@ -3,7 +3,7 @@ Resources:
   - TargetService:
       Type: AWS::ECS::Service
       Properties:
-        TaskDefinition: "arn:aws:ecs:us-east-2:148455690730:task-definition/KrinoAPI:8"
+        TaskDefinition: "arn:aws:ecs:us-east-2:148455690730:task-definition/KrinoAPI:10"
         LoadBalancerInfo:
           ContainerName: "krinoapidjango"
           ContainerPort: 8888
