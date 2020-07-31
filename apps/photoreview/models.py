@@ -21,6 +21,9 @@ class CustomUser(AbstractUser):
 
     REQUIRED_FIELDS = []
 
+class Tag(models.Model):
+    tag = models.CharField(max_length=200, blank=True)
+
 class UploadedPhoto(models.Model):
     title = models.CharField(max_length = 100)
     photo = models.ImageField()
@@ -37,13 +40,10 @@ class UploadedPhoto(models.Model):
     camera_used = models.CharField(max_length = 100, blank= True, null=True)
     camera_lens = models.CharField(max_length = 100, blank= True, null=True)
     aperture = models.CharField(max_length = 100, blank= True, null=True)
-    shutter_speed = models.IntegerField(blank=True, null=True)
+    shutter_speed = models.CharField(max_length=50, blank=True, null=True)
     iso = models.CharField(max_length=100, blank=True, null=True)
 
-    # slug = models.SlugField(max_length=100, null=True)
-
-class Tag(models.Model):
-    tag = models.CharField(max_length=200, blank=True)
+    tags = models.ManyToManyField(Tag,)
 
 class Comment(models.Model):
     photo_id = models.ForeignKey(UploadedPhoto, related_name='comments', on_delete=models.CASCADE)
